@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: whack-a-mole
+  labels:
+    run: whack-a-mole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: whack-a-mole
+  template:
+    metadata:
+      labels:
+        run: whack-a-mole
+    spec:
+      containers:
+      - image: gcr.io/portfoliovue/whack-a-mole-backend:v1.4
+        resources:
+          requests:
+            cpu: 0.1
+        name: whack-a-mole-backend
+        ports:
+        - containerPort: 8080
+      - image: gcr.io/portfoliovue/whack-a-mole-frontend:v1.0
+        resources:
+          requests:
+            cpu: 0.1
+        name: whack-a-mole-frontend
+        ports:
+        - containerPort: 8081

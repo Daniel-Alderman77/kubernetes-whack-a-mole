@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: test-moles
+  labels:
+    run: test-moles
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      run: test-moles
+  template:
+    metadata:
+      labels:
+        run: test-moles
+    spec:
+      containers:
+      - image: gcr.io/portfoliovue/whack-a-mole-mole:v1.0
+        resources:
+          requests:
+            cpu: 0.05
+        name: test-moles
+        ports:
+        - containerPort: 8080
