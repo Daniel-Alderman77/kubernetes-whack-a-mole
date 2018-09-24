@@ -5,7 +5,7 @@ metadata:
   labels:
     run: test-moles
 spec:
-  replicas: 5
+  replicas: 6
   selector:
     matchLabels:
       run: test-moles

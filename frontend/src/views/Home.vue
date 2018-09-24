@@ -28,5 +28,7 @@ export default {
   font-family : inherit;
   font-size: 1em;
   background-color: #42b983;
+  color: #fff;
+  font-weight: bold;
 }
 </style>
