@@ -18,14 +18,22 @@ spec:
       - image: gcr.io/portfoliovue/whack-a-mole-backend:v1.4
         resources:
           requests:
-            cpu: 0.1
+            cpu: "0.05"
+            memory: "64Mi"
+          limits:
+            memory: "128Mi"
+            cpu: "0.1"
         name: whack-a-mole-backend
         ports:
         - containerPort: 8080
       - image: gcr.io/portfoliovue/whack-a-mole-frontend:v1.0
         resources:
           requests:
-            cpu: 0.1
+            cpu: "0.05"
+            memory: "128Mi"
+          limits:
+            memory: "256Mi"
+            cpu: "0.2"
         name: whack-a-mole-frontend
         ports:
         - containerPort: 8081
