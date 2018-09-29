@@ -26,10 +26,14 @@ func handle(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlePodData(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprint(w, kubernetes.ListPods(w))
 }
 
 func handleMolePodData(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprint(w, kubernetes.ListMolePods(w))
 }
 
@@ -37,5 +41,7 @@ func handleDeletePod(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	podID := vars["podID"]
 
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
 	kubernetes.DeletePod(w, podID)
 }
