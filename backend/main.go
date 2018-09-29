@@ -15,14 +15,13 @@ func main() {
 	r.HandleFunc("/", handle)
 	r.HandleFunc("/getPods", handlePodData)
 	r.HandleFunc("/getMolePods", handleMolePodData)
+	r.HandleFunc("/deletePod/{podID}", handleDeletePod)
 
 	fmt.Println("About to listen on 8080. Go to http://127.0.0.1:8080/")
 	http.ListenAndServe(":8080", logging.Logger(r))
 }
 
 func handle(w http.ResponseWriter, r *http.Request) {
-	// vars := mux.Vars(r)
-
 	fmt.Fprintln(w, "Kubernetes Whack-A-Mole")
 }
 
@@ -32,4 +31,11 @@ func handlePodData(w http.ResponseWriter, r *http.Request) {
 
 func handleMolePodData(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, kubernetes.ListMolePods(w))
+}
+
+func handleDeletePod(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	podID := vars["podID"]
+
+	kubernetes.DeletePod(w, podID)
 }

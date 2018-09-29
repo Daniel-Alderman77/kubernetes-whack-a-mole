@@ -32,6 +32,26 @@ func createClient() *kubernetes.Clientset {
 	return clientset
 }
 
+func getNameSpace(podID string) string {
+	clientset := createClient()
+
+	var podNameSpace string
+
+	pods, err := clientset.CoreV1().Pods("").List(metav1.ListOptions{})
+	if err != nil {
+		log.Panic(err.Error())
+	}
+
+	for i := range pods.Items {
+		if pods.Items[i].Name == podID {
+			podNameSpace = pods.Items[i].Namespace
+		}
+	}
+	log.Printf("The pod %s is in the %s\n", podID, podNameSpace)
+
+	return podNameSpace
+}
+
 // ListPods returns a list of pods running within the cluster.
 func ListPods(w http.ResponseWriter) string {
 	clientset := createClient()
@@ -92,4 +112,20 @@ func ListMolePods(w http.ResponseWriter) string {
 	fmt.Println(result)
 
 	return result
+}
+
+// DeletePod deletes a specified pod within the cluster.
+func DeletePod(w http.ResponseWriter, podID string) {
+	clientset := createClient()
+	podNameSpace := getNameSpace(podID)
+
+	if len(podNameSpace) == 0 {
+		log.Printf("Pod not found\n")
+	} else {
+		err := clientset.CoreV1().Pods(podNameSpace).Delete(podID, &metav1.DeleteOptions{})
+		if err != nil {
+			log.Panic(err.Error())
+		}
+		log.Printf("Pod %v was deleted\n", podID)
+	}
 }
