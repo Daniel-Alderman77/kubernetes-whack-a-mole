@@ -105,6 +105,9 @@ func ListMolePods(w http.ResponseWriter) string {
 	for i := range pods.Items {
 		if strings.Contains(pods.Items[i].Name, "test-moles") {
 			podData.Name = pods.Items[i].Name
+			podData.StartTime = pods.Items[i].Status.StartTime.Unix()
+			podData.PodIP = pods.Items[i].Status.PodIP
+			podData.Phase = pods.Items[i].Status.Phase
 
 			podList = append(podList, podData)
 		}
