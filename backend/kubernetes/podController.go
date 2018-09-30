@@ -7,13 +7,17 @@ import (
 	"net/http"
 	"strings"
 
+	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 )
 
 type podData struct {
-	Name string `json:"name"`
+	Name      string      `json:"name"`
+	StartTime int64       `json:"startTime"`
+	PodIP     string      `json:"podIP"`
+	Phase     v1.PodPhase `json:"phase"`
 }
 
 func createClient() *kubernetes.Clientset {
@@ -67,6 +71,9 @@ func ListPods(w http.ResponseWriter) string {
 	var podData podData
 	for i := range pods.Items {
 		podData.Name = pods.Items[i].Name
+		podData.StartTime = pods.Items[i].Status.StartTime.Unix()
+		podData.PodIP = pods.Items[i].Status.PodIP
+		podData.Phase = pods.Items[i].Status.Phase
 
 		podList = append(podList, podData)
 	}
