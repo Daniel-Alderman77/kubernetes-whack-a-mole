@@ -15,7 +15,7 @@ spec:
         run: test-moles
     spec:
       containers:
-      - image: gcr.io/portfoliovue/whack-a-mole-mole:v1.0
+      - image: gcr.io/whack-a-mole/whack-a-mole-mole:v1.0
         resources:
           requests:
             cpu: "0.05"
