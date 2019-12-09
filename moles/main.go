@@ -5,11 +5,10 @@ import (
 	"net/http"
 
 	"github.com/Daniel-Alderman77/kubernetes-whack-a-mole/moles/logging"
-	"github.com/gorilla/mux"
 )
 
 func main() {
-	r := mux.NewRouter()
+	r := http.NewServeMux()
 
 	r.HandleFunc("/", handle)
 
