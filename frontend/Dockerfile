@@ -1,8 +1,8 @@
 # Build stage
 FROM node:alpine as build-stage
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
+COPY package.json yarn.lock ./
+RUN yarn
 COPY . .
 RUN npm run build
 
