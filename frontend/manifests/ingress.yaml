@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: whack-a-mole-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: whack-a-mole.info
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: whack-a-mole-frontend
+          servicePort: 8080
+      - path: /api
+        backend:
+          serviceName: whack-a-mole-backend
+          servicePort: 8081

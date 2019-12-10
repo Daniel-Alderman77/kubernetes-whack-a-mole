@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: test-moles
@@ -15,7 +15,7 @@ spec:
         run: test-moles
     spec:
       containers:
-      - image: gcr.io/whack-a-mole/whack-a-mole-mole:v1.0
+      - image: whack-a-mole/moles
         resources:
           requests:
             cpu: "0.05"

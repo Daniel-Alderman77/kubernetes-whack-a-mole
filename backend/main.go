@@ -13,12 +13,12 @@ func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", handle)
-	r.HandleFunc("/getPods", handlePodData)
-	r.HandleFunc("/getMolePods", handleMolePodData)
-	r.HandleFunc("/deletePod/{podID}", handleDeletePod)
+	r.HandleFunc("/api/getPods", handlePodData)
+	r.HandleFunc("/api/getMolePods", handleMolePodData)
+	r.HandleFunc("/api/deletePod/{podID}", handleDeletePod)
 
-	fmt.Println("About to listen on 8080. Go to http://127.0.0.1:8080/")
-	http.ListenAndServe(":8080", logging.Logger(r))
+	fmt.Println("About to listen on 8081. Go to http://127.0.0.1:8081/")
+	http.ListenAndServe(":8081", logging.Logger(r))
 }
 
 func handle(w http.ResponseWriter, r *http.Request) {

@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: whack-a-mole-frontend
+  labels:
+    app: whack-a-mole-frontend
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: whack-a-mole-frontend
+  selector:
+    app: whack-a-mole-frontend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whack-a-mole-frontend
+  labels:
+    app: whack-a-mole-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whack-a-mole-frontend
+      tier: web
+  template:
+    metadata:
+      labels:
+        app: whack-a-mole-frontend
+        tier: web
+    spec:
+      containers:
+      - image: whack-a-mole/frontend
+        resources:
+          requests:
+            cpu: "0.05"
+            memory: "64Mi"
+          limits:
+            memory: "128Mi"
+            cpu: "0.1"
+        name: whack-a-mole-frontend
+        ports:
+        - containerPort: 8080

@@ -20,5 +20,5 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 # Copy binary from previous stage
 COPY --from=builder /go/src/github.com/Daniel-Alderman77/kubernetes-whack-a-mole/backend .
-EXPOSE 8080
+EXPOSE 8081
 CMD ["./main"]

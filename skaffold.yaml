@@ -1,0 +1,19 @@
+apiVersion: skaffold/v1
+kind: Config
+metadata:
+  name: kubernetes-whack-a-mole
+build:
+  artifacts:
+  - image: whack-a-mole/backend
+    context: backend
+  - image: whack-a-mole/frontend
+    context: frontend
+  - image: whack-a-mole/moles
+    context: moles
+deploy:
+  kubectl:
+    manifests:
+    - backend/manifests/backend-deployment.yaml
+    - frontend/manifests/frontend-deployment.yaml
+    - frontend/manifests/ingress.yaml
+    - moles/manifests/moles-deployment.yaml
