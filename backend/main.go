@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/Daniel-Alderman77/kubernetes-whack-a-mole/backend/kubernetes"
@@ -12,7 +13,7 @@ import (
 func main() {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/", handle)
+	r.HandleFunc("/api", handle)
 	r.HandleFunc("/api/getPods", handlePodData)
 	r.HandleFunc("/api/getMolePods", handleMolePodData)
 	r.HandleFunc("/api/deletePod/{podID}", handleDeletePod)
@@ -22,19 +23,29 @@ func main() {
 }
 
 func handle(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Kubernetes Whack-A-Mole")
+	w.Write([]byte("Kubernetes Whack-A-Mole"))
 }
 
 func handlePodData(w http.ResponseWriter, r *http.Request) {
+	b, err := kubernetes.ListPods(w)
+	if err != nil {
+		log.Println(err)
+	}
+
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprint(w, kubernetes.ListPods(w))
+	w.Write(b)
 }
 
 func handleMolePodData(w http.ResponseWriter, r *http.Request) {
+	b, err := kubernetes.ListMolePods(w)
+	if err != nil {
+		log.Println(err)
+	}
+
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprint(w, kubernetes.ListMolePods(w))
+	w.Write(b)
 }
 
 func handleDeletePod(w http.ResponseWriter, r *http.Request) {
@@ -43,5 +54,8 @@ func handleDeletePod(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-	kubernetes.DeletePod(w, podID)
+	err := kubernetes.DeletePod(w, podID)
+	if err != nil {
+		log.Println(err)
+	}
 }

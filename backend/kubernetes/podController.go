@@ -2,7 +2,6 @@ package kubernetes
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -57,14 +56,14 @@ func getNameSpace(podID string) string {
 }
 
 // ListPods returns a list of pods running within the cluster.
-func ListPods(w http.ResponseWriter) string {
+func ListPods(w http.ResponseWriter) ([]byte, error) {
 	clientset := createClient()
 
 	var podList []podData
 
 	pods, err := clientset.CoreV1().Pods("").List(metav1.ListOptions{})
 	if err != nil {
-		log.Panic(err.Error())
+		return nil, err
 	}
 	log.Printf("There are %d pods in the cluster\n", len(pods.Items))
 
@@ -78,26 +77,23 @@ func ListPods(w http.ResponseWriter) string {
 		podList = append(podList, podData)
 	}
 
-	json, err := json.Marshal(podList)
+	b, err := json.Marshal(podList)
 	if err != nil {
-		log.Panic(err.Error())
+		return nil, err
 	}
 
-	result := string(json)
-	fmt.Println(result)
-
-	return result
+	return b, nil
 }
 
 // ListMolePods returns a list of test mole pods running within the cluster.
-func ListMolePods(w http.ResponseWriter) string {
+func ListMolePods(w http.ResponseWriter) ([]byte, error) {
 	clientset := createClient()
 
 	var podList []podData
 
 	pods, err := clientset.CoreV1().Pods("").List(metav1.ListOptions{})
 	if err != nil {
-		log.Panic(err.Error())
+		return nil, err
 	}
 	log.Printf("There are %d pods in the cluster\n", len(pods.Items))
 
@@ -113,19 +109,16 @@ func ListMolePods(w http.ResponseWriter) string {
 		}
 	}
 
-	json, err := json.Marshal(podList)
+	b, err := json.Marshal(podList)
 	if err != nil {
-		log.Panic(err.Error())
+		return nil, err
 	}
 
-	result := string(json)
-	fmt.Println(result)
-
-	return result
+	return b, nil
 }
 
 // DeletePod deletes a specified pod within the cluster.
-func DeletePod(w http.ResponseWriter, podID string) {
+func DeletePod(w http.ResponseWriter, podID string) error {
 	clientset := createClient()
 	podNameSpace := getNameSpace(podID)
 
@@ -134,8 +127,10 @@ func DeletePod(w http.ResponseWriter, podID string) {
 	} else {
 		err := clientset.CoreV1().Pods(podNameSpace).Delete(podID, &metav1.DeleteOptions{})
 		if err != nil {
-			log.Panic(err.Error())
+			return err 
 		}
 		log.Printf("Pod %v was deleted\n", podID)
 	}
+
+	return nil
 }
