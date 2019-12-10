@@ -50,7 +50,7 @@ export default {
     },
     fetchData () {
       this.axios
-        .get('http://127.0.0.1:8080/getMolePods')
+        .get('/api/getMolePods')
         .then(response => (
           this.pods = response.data
         ))
@@ -60,7 +60,7 @@ export default {
     },
     updateData (podID, gopherClicked) {
       this.axios
-        .get('http://127.0.0.1:8080/getMolePods')
+        .get('/api/getMolePods')
         .then(response => {
           this.pods.splice(gopherClicked, 1, response.data[6])
           console.log(this.pods[gopherClicked].phase)
@@ -71,7 +71,7 @@ export default {
     },
     deletePod (podID, gopherClicked) {
       this.axios
-        .get('http://127.0.0.1:8080/deletePod/' + podID)
+        .get('/api/deletePod/' + podID)
         .then(response => {
           alert(podID + ' was deleted')
         })

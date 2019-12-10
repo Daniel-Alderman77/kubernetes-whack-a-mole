@@ -28,7 +28,7 @@ export default {
   methods: {
     fetchData () {
       this.axios
-        .get('http://127.0.0.1:8080/getPods')
+        .get('/api/getPods')
         .then(response => (
           this.pods = response
         ))
